@@ -7,7 +7,7 @@ import (
 	"net"
 	"os"
 
-	"github.com/sourcegraph/jsonrpc2"
+	"github.com/agent-api/jsonrpc2"
 )
 
 // Send a JSON-RPC notification with its params member omitted.

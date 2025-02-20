@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/sourcegraph/jsonrpc2"
+	"github.com/agent-api/jsonrpc2"
 )
 
 func TestPickID(t *testing.T) {
@@ -17,7 +17,7 @@ func TestPickID(t *testing.T) {
 	defer b.Close()
 
 	handler := handlerFunc(func(ctx context.Context, conn *jsonrpc2.Conn, req *jsonrpc2.Request) {
-		if err := conn.Reply(ctx, req.ID, fmt.Sprintf("hello, #%s: %s", req.ID, *req.Params)); err != nil {
+		if err := conn.Reply(ctx, &req.ID, fmt.Sprintf("hello, #%s: %s", req.ID, *req.Params)); err != nil {
 			t.Error(err)
 		}
 	})
@@ -64,7 +64,7 @@ func TestStringID(t *testing.T) {
 	handler := handlerFunc(func(ctx context.Context, conn *jsonrpc2.Conn, req *jsonrpc2.Request) {
 		replyWithError := func(msg string) {
 			respErr := &jsonrpc2.Error{Code: jsonrpc2.CodeInvalidRequest, Message: msg}
-			if err := conn.ReplyWithError(ctx, req.ID, respErr); err != nil {
+			if err := conn.ReplyWithError(ctx, &req.ID, respErr); err != nil {
 				t.Error(err)
 			}
 		}
@@ -76,7 +76,7 @@ func TestStringID(t *testing.T) {
 			replyWithError("ID.Str should be populated but is empty")
 			return
 		}
-		if err := conn.Reply(ctx, req.ID, "ok"); err != nil {
+		if err := conn.Reply(ctx, &req.ID, "ok"); err != nil {
 			t.Error(err)
 		}
 	})
@@ -103,7 +103,7 @@ func TestExtraField(t *testing.T) {
 	handler := handlerFunc(func(ctx context.Context, conn *jsonrpc2.Conn, req *jsonrpc2.Request) {
 		replyWithError := func(msg string) {
 			respErr := &jsonrpc2.Error{Code: jsonrpc2.CodeInvalidRequest, Message: msg}
-			if err := conn.ReplyWithError(ctx, req.ID, respErr); err != nil {
+			if err := conn.ReplyWithError(ctx, &req.ID, respErr); err != nil {
 				t.Error(err)
 			}
 		}
@@ -126,7 +126,7 @@ func TestExtraField(t *testing.T) {
 			replyWithError("sessionId has the wrong value")
 			return
 		}
-		if err := conn.Reply(ctx, req.ID, "ok"); err != nil {
+		if err := conn.Reply(ctx, &req.ID, "ok"); err != nil {
 			t.Error(err)
 		}
 	})

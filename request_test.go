@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/sourcegraph/jsonrpc2"
+	"github.com/agent-api/jsonrpc2"
 )
 
 func TestRequest_MarshalJSON_jsonrpc(t *testing.T) {

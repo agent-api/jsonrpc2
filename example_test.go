@@ -7,7 +7,7 @@ import (
 	"net"
 	"os"
 
-	"github.com/sourcegraph/jsonrpc2"
+	"github.com/agent-api/jsonrpc2"
 )
 
 func Example() {
@@ -50,13 +50,13 @@ type myHandler struct{}
 func (h *myHandler) Handle(ctx context.Context, c *jsonrpc2.Conn, r *jsonrpc2.Request) {
 	switch r.Method {
 	case "sayHello":
-		if err := c.Reply(ctx, r.ID, "hello world"); err != nil {
+		if err := c.Reply(ctx, &r.ID, "hello world"); err != nil {
 			log.Println(err)
 			return
 		}
 	default:
 		err := &jsonrpc2.Error{Code: jsonrpc2.CodeMethodNotFound, Message: "Method not found"}
-		if err := c.ReplyWithError(ctx, r.ID, err); err != nil {
+		if err := c.ReplyWithError(ctx, &r.ID, err); err != nil {
 			log.Println(err)
 			return
 		}

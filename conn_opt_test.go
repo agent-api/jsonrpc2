@@ -8,7 +8,7 @@ import (
 	"net"
 	"testing"
 
-	"github.com/sourcegraph/jsonrpc2"
+	"github.com/agent-api/jsonrpc2"
 )
 
 func TestSetLogger(t *testing.T) {
@@ -38,7 +38,7 @@ func TestSetLogger(t *testing.T) {
 	defer connB.Close()
 
 	// Write a response with no corresponding request.
-	if err := connB.Reply(ctx, jsonrpc2.ID{Num: 0}, nil); err != nil {
+	if err := connB.Reply(ctx, &jsonrpc2.ID{Num: 0}, nil); err != nil {
 		t.Fatal(err)
 	}
 
@@ -58,7 +58,7 @@ type dummyHandler struct {
 
 func (h *dummyHandler) Handle(ctx context.Context, conn *jsonrpc2.Conn, req *jsonrpc2.Request) {
 	if !req.Notif {
-		err := conn.Reply(ctx, req.ID, nil)
+		err := conn.Reply(ctx, &req.ID, nil)
 		if err != nil {
 			h.t.Error(err)
 			return

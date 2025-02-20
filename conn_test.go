@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sourcegraph/jsonrpc2"
+	"github.com/agent-api/jsonrpc2"
 )
 
 var paramsTests = []struct {

@@ -26,7 +26,7 @@ func (h *HandlerWithErrorConfigurer) Handle(ctx context.Context, conn *Conn, req
 		return
 	}
 
-	resp := &Response{ID: req.ID}
+	resp := &Response{ID: &req.ID}
 	if err == nil {
 		err = resp.SetResult(result)
 	}

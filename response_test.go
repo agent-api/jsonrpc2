@@ -6,11 +6,14 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/sourcegraph/jsonrpc2"
+	"github.com/agent-api/jsonrpc2"
 )
 
 func TestResponse_MarshalJSON_jsonrpc(t *testing.T) {
-	b, err := json.Marshal(&jsonrpc2.Response{Result: &jsonNull})
+	b, err := json.Marshal(&jsonrpc2.Response{
+		ID:     &jsonrpc2.ID{Num: 0},
+		Result: &jsonNull,
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -67,15 +70,15 @@ func TestResponse_MarshalUnmarshalJSON(t *testing.T) {
 	}{
 		{
 			data: []byte(`{"id":123,"result":{"foo":"bar"},"jsonrpc":"2.0"}`),
-			want: jsonrpc2.Response{ID: jsonrpc2.ID{Num: 123}, Result: &obj},
+			want: jsonrpc2.Response{ID: &jsonrpc2.ID{Num: 123}, Result: &obj},
 		},
 		{
 			data: []byte(`{"id":123,"result":null,"jsonrpc":"2.0"}`),
-			want: jsonrpc2.Response{ID: jsonrpc2.ID{Num: 123}, Result: &jsonNull},
+			want: jsonrpc2.Response{ID: &jsonrpc2.ID{Num: 123}, Result: &jsonNull},
 		},
 		{
 			data:  []byte(`{"id":123,"jsonrpc":"2.0"}`),
-			want:  jsonrpc2.Response{ID: jsonrpc2.ID{Num: 123}, Result: nil},
+			want:  jsonrpc2.Response{ID: &jsonrpc2.ID{Num: 123}, Result: nil},
 			error: true, // either result or error field must be set
 		},
 	}
@@ -104,5 +107,19 @@ func TestResponse_MarshalUnmarshalJSON(t *testing.T) {
 		if !bytes.Equal(data, test.data) {
 			t.Errorf("got JSON %q, want %q", data, test.data)
 		}
+	}
+}
+
+func TestResponse_MarshalJSON_nullRequestId(t *testing.T) {
+	b, err := json.Marshal(&jsonrpc2.Response{
+		Error: &jsonrpc2.Error{
+			Code: jsonrpc2.CodeInternalError,
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want := `{"error":{"code":-32603,"message":""},"jsonrpc":"2.0"}`; string(b) != want {
+		t.Errorf("got %q, want %q", b, want)
 	}
 }

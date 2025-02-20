@@ -51,10 +51,10 @@ func LogMessages(logger Logger) ConnOpt {
 				switch {
 				case resp.Result != nil:
 					result, _ := json.Marshal(resp.Result)
-					logger.Printf("jsonrpc2: --> result #%s: %s: %s\n", resp.ID, method, result)
+					logger.Printf("jsonrpc2: --> result #%s: %s: %s\n", *resp.ID, method, result)
 				case resp.Error != nil:
 					err, _ := json.Marshal(resp.Error)
-					logger.Printf("jsonrpc2: --> error #%s: %s: %s\n", resp.ID, method, err)
+					logger.Printf("jsonrpc2: --> error #%s: %s: %s\n", *resp.ID, method, err)
 				}
 
 			case req != nil:
@@ -74,8 +74,8 @@ func LogMessages(logger Logger) ConnOpt {
 			switch {
 			case resp != nil:
 				mu.Lock()
-				method := reqMethods[resp.ID]
-				delete(reqMethods, resp.ID)
+				method := reqMethods[*resp.ID]
+				delete(reqMethods, *resp.ID)
 				mu.Unlock()
 				if method == "" {
 					method = "(no previous request)"

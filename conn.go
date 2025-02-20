@@ -144,7 +144,7 @@ func (c *Conn) Notify(ctx context.Context, method string, params interface{}, op
 }
 
 // Reply sends a successful response with a result.
-func (c *Conn) Reply(ctx context.Context, id ID, result interface{}) error {
+func (c *Conn) Reply(ctx context.Context, id *ID, result interface{}) error {
 	resp := &Response{ID: id}
 	if err := resp.SetResult(result); err != nil {
 		return err
@@ -154,7 +154,7 @@ func (c *Conn) Reply(ctx context.Context, id ID, result interface{}) error {
 }
 
 // ReplyWithError sends a response with an error.
-func (c *Conn) ReplyWithError(ctx context.Context, id ID, respErr *Error) error {
+func (c *Conn) ReplyWithError(ctx context.Context, id *ID, respErr *Error) error {
 	_, err := c.send(ctx, &anyMessage{response: &Response{ID: id, Error: respErr}}, false)
 	return err
 }
@@ -208,8 +208,8 @@ func (c *Conn) readMessages(ctx context.Context) {
 			resp := m.response
 			id := resp.ID
 			c.mu.Lock()
-			call := c.pending[id]
-			delete(c.pending, id)
+			call := c.pending[*id]
+			delete(c.pending, *id)
 			c.mu.Unlock()
 
 			var req *Request

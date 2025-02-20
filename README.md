@@ -1,11 +1,14 @@
-# jsonrpc2: JSON-RPC 2.0 implementation for Go [![Build Status](https://travis-ci.org/sourcegraph/jsonrpc2.svg)](https://travis-ci.org/sourcegraph/jsonrpc2) [![Sourcegraph](https://sourcegraph.com/github.com/sourcegraph/jsonrpc2/-/badge.svg)](https://sourcegraph.com/github.com/sourcegraph/jsonrpc2?badge) [![GoDoc](https://godoc.org/github.com/sourcegraph/jsonrpc2?status.svg)](https://godoc.org/github.com/sourcegraph/jsonrpc2)
+# jsonrpc2
 
+Package `jsonrpc2` provides a [Go](https://golang.org) implementation of the
+[JSON-RPC 2.0](http://www.jsonrpc.org/specification) spec.
 
-Package jsonrpc2 provides a [Go](https://golang.org) implementation of [JSON-RPC 2.0](http://www.jsonrpc.org/specification).
-
-* [Documentation](https://pkg.go.dev/github.com/sourcegraph/jsonrpc2)
-* [Open the code in Sourcegraph](https://sourcegraph.com/github.com/sourcegraph/jsonrpc2)
+* [Documentation](https://pkg.go.dev/github.com/agent-api/jsonrpc2)
 
 ## Known issues
 
 * Batch requests and responses are not yet supported.
+
+---
+
+This is a fork of the [`sourcegraph/jsonrpc2` package](https://github.com/sourcegraph/jsonrpc2).

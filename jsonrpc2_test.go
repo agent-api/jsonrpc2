@@ -13,9 +13,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/agent-api/jsonrpc2"
+	websocketjsonrpc2 "github.com/agent-api/jsonrpc2/websocket"
 	"github.com/gorilla/websocket"
-	"github.com/sourcegraph/jsonrpc2"
-	websocketjsonrpc2 "github.com/sourcegraph/jsonrpc2/websocket"
 )
 
 func TestError_MarshalJSON(t *testing.T) {
@@ -84,7 +84,7 @@ func (h *testHandlerA) Handle(ctx context.Context, conn *jsonrpc2.Conn, req *jso
 	if req.Notif {
 		return // notification
 	}
-	if err := conn.Reply(ctx, req.ID, fmt.Sprintf("hello, #%s: %s", req.ID, *req.Params)); err != nil {
+	if err := conn.Reply(ctx, &req.ID, fmt.Sprintf("hello, #%s: %s", req.ID, *req.Params)); err != nil {
 		h.t.Error(err)
 	}
 
